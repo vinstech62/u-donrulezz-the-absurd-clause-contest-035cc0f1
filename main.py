@@ -16,6 +16,12 @@ CLAUSE = (
 
 
 def main():
+    # Gate self-check: the sealed scorer only judges 1-200 character,
+    # single-line, non-blank UTF-8 text. Fail loudly instead of
+    # silently shipping an invalid entry.
+    assert "\n" not in CLAUSE, "clause must be a single line"
+    assert 1 <= len(CLAUSE) <= 200, "clause must be 1-200 characters"
+    assert CLAUSE.strip(), "clause must not be only whitespace"
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8", newline="\n") as f:
         f.write(CLAUSE + "\n")
